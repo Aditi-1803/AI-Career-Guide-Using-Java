@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CAREERIQ | Skill Intelligence</title>
+
+    <style>
+
+        /* ==============================
+           RESET
+        ============================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ==============================
+           BODY
+        ============================== */
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #070a18;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* ==============================
+           NAVBAR
+        ============================== */
+
+        .navbar {
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            background: #080b19;
+            border-bottom: 1px solid #202640;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: #6874ff;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 34px;
+        }
+
+        .nav-links a {
+            color: #aeb7d4;
+            text-decoration: none;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+        .nav-links .active {
+            color: #ffffff;
+        }
+
+        /* ==============================
+           MAIN CONTAINER
+        ============================== */
+
+        .container {
+            width: 80%;
+            max-width: 1280px;
+
+            margin: 0 auto;
+
+            padding-top: 58px;
+            padding-bottom: 80px;
+        }
+
+        /* ==============================
+           PAGE HEADER
+        ============================== */
+
+        .eyebrow {
+            color: #6d78ff;
+            font-size: 14px;
+            font-weight: 700;
+
+            letter-spacing: 3px;
+
+            margin-bottom: 14px;
+        }
+
+        .page-title {
+            font-size: 42px;
+            line-height: 1.2;
+
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #9ba7c5;
+            font-size: 18px;
+
+            margin-bottom: 42px;
+        }
+
+        /* ==============================
+           CARD
+        ============================== */
+
+        .card {
+            background: linear-gradient(
+                    145deg,
+                    #11162a,
+                    #0c1020
+            );
+
+            border: 1px solid #252d49;
+
+            border-radius: 22px;
+
+            padding: 32px;
+
+            box-shadow:
+                    0 20px 50px rgba(0, 0, 0, 0.20);
+        }
+
+        /* ==============================
+           TOP GRID
+        ============================== */
+
+        .top-grid {
+            display: grid;
+
+            grid-template-columns:
+                    420px
+                    1fr;
+
+            gap: 28px;
+        }
+
+        /* ==============================
+           OVERALL SCORE CARD
+        ============================== */
+
+        .overall-card {
+
+            min-height: 385px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 23px;
+
+            margin-bottom: 25px;
+        }
+
+        /* ==============================
+           SCORE CIRCLE
+        ============================== */
+
+        .score-circle {
+
+            width: 210px;
+            height: 210px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            position: relative;
+
+            margin-bottom: 25px;
+        }
+
+        .score-circle::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 166px;
+            height: 166px;
+
+            border-radius: 50%;
+
+            background: #0d1223;
+        }
+
+        .score-content {
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .score-number {
+
+            font-size: 50px;
+
+            font-weight: 800;
+        }
+
+        .score-label {
+
+            color: #929dbc;
+
+            font-size: 13px;
+
+            margin-top: 3px;
+        }
+
+        /* ==============================
+           LEVEL BADGE
+        ============================== */
+
+        .level-badge {
+
+            padding: 10px 25px;
+
+            border-radius: 30px;
+
+            background: #202744;
+
+            color: #91a0ff;
+
+            font-size: 17px;
+
+            font-weight: 700;
+        }
+
+        /* ==============================
+           BREAKDOWN CARD
+        ============================== */
+
+        .breakdown-card {
+
+            min-height: 385px;
+        }
+
+        .skill-item {
+
+            margin-bottom: 27px;
+        }
+
+        .skill-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 10px;
+        }
+
+        .skill-name {
+
+            font-size: 16px;
+
+            font-weight: 600;
+        }
+
+        .skill-value {
+
+            color: #7080ff;
+
+            font-weight: 700;
+        }
+
+        /* ==============================
+           PROGRESS BAR
+        ============================== */
+
+        .progress-bg {
+
+            width: 100%;
+
+            height: 10px;
+
+            background: #20263b;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress-fill {
+
+            height: 100%;
+
+            border-radius: 20px;
+
+            background: linear-gradient(
+                    90deg,
+                    #5664ff,
+                    #7a83ff
+            );
+
+            transition: width 0.8s ease;
+        }
+
+        /* ==============================
+           INSIGHTS
+        ============================== */
+
+        .insights-card {
+
+            margin-top: 28px;
+        }
+
+        .section-title {
+
+            font-size: 24px;
+
+            margin-bottom: 25px;
+        }
+
+        .insight-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                    1fr
+                    1fr;
+
+            gap: 22px;
+        }
+
+        .insight-box {
+
+            background: #171d32;
+
+            border: 1px solid #293250;
+
+            border-radius: 17px;
+
+            padding: 25px;
+        }
+
+        .insight-label {
+
+            color: #8994b5;
+
+            font-size: 13px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 10px;
+        }
+
+        .insight-heading {
+
+            font-size: 22px;
+
+            margin-bottom: 8px;
+        }
+
+        .insight-score {
+
+            color: #7180ff;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            margin-bottom: 12px;
+        }
+
+        .insight-text {
+
+            color: #9ca7c2;
+
+            line-height: 1.6;
+
+            font-size: 15px;
+        }
+
+        /* ==============================
+           PROFILE
+        ============================== */
+
+        .profile-card {
+
+            margin-top: 28px;
+        }
+
+        .profile-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                    repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .profile-item {
+
+            background: #171d32;
+
+            border: 1px solid #293250;
+
+            border-radius: 16px;
+
+            padding: 22px;
+        }
+
+        .profile-item h4 {
+
+            color: #8994b5;
+
+            font-size: 13px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 9px;
+        }
+
+        .profile-item p {
+
+            font-size: 19px;
+
+            font-weight: 700;
+        }
+
+        /* ==============================
+           RECOMMENDATION
+        ============================== */
+
+        .recommendation-card {
+
+            margin-top: 28px;
+
+            border: 1px solid #343d68;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #111936,
+                            #10152b
+                    );
+        }
+
+        .recommendation-content {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 30px;
+        }
+
+        .recommendation-text {
+
+            max-width: 760px;
+        }
+
+        .recommendation-text h2 {
+
+            font-size: 24px;
+
+            margin-bottom: 12px;
+        }
+
+        .recommendation-text p {
+
+            color: #9ba7c5;
+
+            line-height: 1.7;
+        }
+
+        /* ==============================
+           ACTION BUTTON
+        ============================== */
+
+        .action-button {
+
+            text-decoration: none;
+
+            color: white;
+
+            background: #5967ff;
+
+            padding: 14px 24px;
+
+            border-radius: 12px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+
+            transition: 0.3s;
+        }
+
+        .action-button:hover {
+
+            background: #7380ff;
+
+            transform: translateY(-2px);
+        }
+
+        /* ==============================
+           BOTTOM BUTTON
+        ============================== */
+
+        .bottom-actions {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin-top: 35px;
+        }
+
+        .back-button {
+
+            text-decoration: none;
+
+            color: #aeb7d4;
+
+            border: 1px solid #303952;
+
+            padding: 13px 25px;
+
+            border-radius: 12px;
+
+            transition: 0.3s;
+        }
+
+        .back-button:hover {
+
+            color: white;
+
+            border-color: #6874ff;
+        }
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 950px) {
+
+            .container {
+
+                width: 90%;
+            }
+
+            .top-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .profile-grid {
+
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .recommendation-content {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .navbar {
+
+                padding: 0 20px;
+            }
+
+            .nav-links {
+
+                gap: 12px;
+            }
+
+            .nav-links a {
+
+                font-size: 13px;
+            }
+
+            .page-title {
+
+                font-size: 32px;
+            }
+
+            .subtitle {
+
+                font-size: 15px;
+            }
+
+            .insight-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .profile-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+
+                padding: 23px;
+            }
+
+            .score-circle {
+
+                width: 185px;
+                height: 185px;
+            }
+
+            .score-circle::before {
+
+                width: 145px;
+                height: 145px;
+            }
+
+            .score-number {
+
+                font-size: 42px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     NAVBAR
+========================================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        CAREER<span>IQ</span>
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/assessment/Java">
+            Assessment
+        </a>
+
+        <a href="/skill-intelligence"
+           class="active">
+            Skill Intelligence
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================
+     MAIN
+========================================= -->
+
+<main class="container">
+
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <div class="eyebrow">
+
+        SKILL INTELLIGENCE
+
+    </div>
+
+
+    <h1 class="page-title">
+
+        <span th:text="${skill}">
+            Java
+        </span>
+
+        Skill Analysis
+
+    </h1>
+
+
+    <p class="subtitle">
+
+        CAREERIQ analyzes your technical capability
+        across multiple dimensions.
+
+    </p>
+
+
+    <!-- =====================================
+         TOP GRID
+    ====================================== -->
+
+    <div class="top-grid">
+
+
+        <!-- =================================
+             OVERALL SCORE
+        ================================== -->
+
+        <div class="card overall-card">
+
+            <h2 class="card-title">
+
+                Overall Skill
+
+            </h2>
+
+
+            <div class="score-circle"
+                 th:style="'background: conic-gradient(#6874ff ' + ${score} + '%, #20263d 0);'">
+
+                <div class="score-content">
+
+                    <div class="score-number">
+
+                        <span th:text="${score}">
+                            0
+                        </span>%
+
+                    </div>
+
+
+                    <div class="score-label">
+
+                        Overall capability
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="level-badge"
+                 th:text="${skillLevel}">
+
+                Advanced
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             SKILL BREAKDOWN
+        ================================== -->
+
+        <div class="card breakdown-card">
+
+            <h2 class="card-title">
+
+                Skill Breakdown
+
+            </h2>
+
+
+            <!-- KNOWLEDGE -->
+
+            <div class="skill-item">
+
+                <div class="skill-header">
+
+                    <span class="skill-name">
+
+                        Knowledge
+
+                    </span>
+
+
+                    <span class="skill-value">
+
+                        <span th:text="${knowledgeScore}">
+                            0
+                        </span>%
+
+                    </span>
+
+                </div>
+
+
+                <div class="progress-bg">
+
+                    <div class="progress-fill"
+                         th:style="'width:' + ${knowledgeScore} + '%'">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROBLEM SOLVING -->
+
+            <div class="skill-item">
+
+                <div class="skill-header">
+
+                    <span class="skill-name">
+
+                        Problem Solving
+
+                    </span>
+
+
+                    <span class="skill-value">
+
+                        <span th:text="${problemSolvingScore}">
+                            0
+                        </span>%
+
+                    </span>
+
+                </div>
+
+
+                <div class="progress-bg">
+
+                    <div class="progress-fill"
+                         th:style="'width:' + ${problemSolvingScore} + '%'">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- APPLICATION -->
+
+            <div class="skill-item">
+
+                <div class="skill-header">
+
+                    <span class="skill-name">
+
+                        Application
+
+                    </span>
+
+
+                    <span class="skill-value">
+
+                        <span th:text="${applicationScore}">
+                            0
+                        </span>%
+
+                    </span>
+
+                </div>
+
+
+                <div class="progress-bg">
+
+                    <div class="progress-fill"
+                         th:style="'width:' + ${applicationScore} + '%'">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DEBUGGING -->
+
+            <div class="skill-item">
+
+                <div class="skill-header">
+
+                    <span class="skill-name">
+
+                        Debugging
+
+                    </span>
+
+
+                    <span class="skill-value">
+
+                        <span th:text="${debuggingScore}">
+                            0
+                        </span>%
+
+                    </span>
+
+                </div>
+
+
+                <div class="progress-bg">
+
+                    <div class="progress-fill"
+                         th:style="'width:' + ${debuggingScore} + '%'">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONFIDENCE -->
+
+            <div class="skill-item"
+                 style="margin-bottom: 0;">
+
+                <div class="skill-header">
+
+                    <span class="skill-name">
+
+                        Confidence
+
+                    </span>
+
+
+                    <span class="skill-value">
+
+                        <span th:text="${confidenceScore}">
+                            0
+                        </span>%
+
+                    </span>
+
+                </div>
+
+
+                <div class="progress-bg">
+
+                    <div class="progress-fill"
+                         th:style="'width:' + ${confidenceScore} + '%'">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================
+         CAREERIQ INSIGHTS
+    ====================================== -->
+
+    <div class="card insights-card">
+
+        <h2 class="section-title">
+
+            CAREERIQ Insights
+
+        </h2>
+
+
+        <div class="insight-grid">
+
+
+            <!-- STRONGEST AREA -->
+
+            <div class="insight-box">
+
+                <div class="insight-label">
+
+                    Strongest Area
+
+                </div>
+
+
+                <div class="insight-heading"
+                     th:text="${strongestArea}">
+
+                    Problem Solving
+
+                </div>
+
+
+                <div class="insight-score">
+
+                    Score:
+
+                    <span th:text="${strongestScore}">
+                        0
+                    </span>%
+
+                </div>
+
+
+                <p class="insight-text">
+
+                    This is currently your strongest
+                    measured capability in
+
+                    <span th:text="${skill}">
+                        Java
+                    </span>.
+
+                    Continue practicing real-world
+                    problems to strengthen this area.
+
+                </p>
+
+            </div>
+
+
+            <!-- DEVELOPMENT AREA -->
+
+            <div class="insight-box">
+
+                <div class="insight-label">
+
+                    Development Area
+
+                </div>
+
+
+                <div class="insight-heading"
+                     th:text="${developmentArea}">
+
+                    Debugging
+
+                </div>
+
+
+                <div class="insight-score">
+
+                    Current Score:
+
+                    <span th:text="${developmentScore}">
+                        0
+                    </span>%
+
+                </div>
+
+
+                <p class="insight-text">
+
+                    Improving this area can increase
+                    your practical performance.
+
+                    Focus on debugging exercises,
+                    code analysis and real-world
+                    scenarios.
+
+                </p>
+
+            </div>
+
+
+            <!-- CONFIDENCE -->
+
+            <div class="insight-box">
+
+                <div class="insight-label">
+
+                    Skill Confidence
+
+                </div>
+
+
+                <div class="insight-heading">
+
+                    <span th:text="${confidenceScore}">
+                        0
+                    </span>%
+
+                </div>
+
+
+                <div class="insight-score">
+
+                    Assessment-based confidence
+
+                </div>
+
+
+                <p class="insight-text">
+
+                    Your confidence indicator is
+                    currently derived from your
+                    assessment performance.
+
+                </p>
+
+            </div>
+
+
+            <!-- CURRENT LEVEL -->
+
+            <div class="insight-box">
+
+                <div class="insight-label">
+
+                    Current Level
+
+                </div>
+
+
+                <div class="insight-heading"
+                     th:text="${skillLevel}">
+
+                    Advanced
+
+                </div>
+
+
+                <div class="insight-score">
+
+                    Overall:
+
+                    <span th:text="${score}">
+                        0
+                    </span>%
+
+                </div>
+
+
+                <p class="insight-text">
+
+                    Your current assessment places
+                    you at the
+
+                    <strong th:text="${skillLevel}">
+                        Advanced
+                    </strong>
+
+                    level for
+
+                    <span th:text="${skill}">
+                        Java
+                    </span>.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================
+         INTELLIGENCE PROFILE
+    ====================================== -->
+
+    <div class="card profile-card">
+
+        <h2 class="section-title">
+
+            Skill Intelligence Profile
+
+        </h2>
+
+
+        <div class="profile-grid">
+
+
+            <!-- SKILL -->
+
+            <div class="profile-item">
+
+                <h4>
+                    Skill
+                </h4>
+
+                <p th:text="${skill}">
+                    Java
+                </p>
+
+            </div>
+
+
+            <!-- OVERALL -->
+
+            <div class="profile-item">
+
+                <h4>
+                    Overall Score
+                </h4>
+
+                <p>
+
+                    <span th:text="${score}">
+                        0
+                    </span>%
+
+                </p>
+
+            </div>
+
+
+            <!-- LEVEL -->
+
+            <div class="profile-item">
+
+                <h4>
+                    Skill Level
+                </h4>
+
+                <p th:text="${skillLevel}">
+                    Advanced
+                </p>
+
+            </div>
+
+
+            <!-- KNOWLEDGE -->
+
+            <div class="profile-item">
+
+                <h4>
+                    Knowledge
+                </h4>
+
+                <p>
+
+                    <span th:text="${knowledgeScore}">
+                        0
+                    </span>%
+
+                </p>
+
+            </div>
+
+
+            <!-- APPLICATION -->
+
+            <div class="profile-item">
+
+                <h4>
+                    Application
+                </h4>
+
+                <p>
+
+                    <span th:text="${applicationScore}">
+                        0
+                    </span>%
+
+                </p>
+
+            </div>
+
+
+            <!-- DEBUGGING -->
+
+            <div class="profile-item">
+
+                <h4>
+                    Debugging
+                </h4>
+
+                <p>
+
+                    <span th:text="${debuggingScore}">
+                        0
+                    </span>%
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================
+         RECOMMENDATION
+    ====================================== -->
+
+    <div class="card recommendation-card">
+
+        <div class="recommendation-content">
+
+
+            <div class="recommendation-text">
+
+                <h2>
+
+                    What should you improve next?
+
+                </h2>
+
+
+                <p>
+
+                    CAREERIQ recommends focusing on
+
+                    <strong th:text="${developmentArea}">
+                        Debugging
+                    </strong>
+
+                    to strengthen your
+
+                    <span th:text="${skill}">
+                        Java
+                    </span>
+
+                    capability and improve your
+                    overall career readiness.
+
+                </p>
+
+            </div>
+
+
+            <a href="/dashboard"
+               class="action-button">
+
+                Back to Dashboard →
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================
+         BOTTOM ACTION
+    ====================================== -->
+
+    <div class="bottom-actions">
+
+        <a href="/dashboard"
+           class="back-button">
+
+            ← Return to Dashboard
+
+        </a>
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CAREERIQ | Technical Assessment</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #080b18;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            border-bottom: 1px solid #22283d;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: #6872ff;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-right a {
+            color: #9da4bd;
+            text-decoration: none;
+        }
+
+        .profile {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #626cff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 86%;
+            max-width: 1000px;
+            margin: 45px auto;
+        }
+
+        .small-title {
+            color: #6872ff;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #9da4bd;
+            margin-bottom: 25px;
+        }
+
+        .progress {
+            height: 7px;
+            background: #20263a;
+            border-radius: 20px;
+            margin-bottom: 35px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 50%;
+            background: #6872ff;
+            border-radius: 20px;
+        }
+
+        .question-card {
+            background: #111629;
+            border: 1px solid #272d45;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .question-number {
+            color: #6872ff;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            margin: 12px 0;
+            background: #171c30;
+            border: 1px solid #292f46;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            border-color: #6872ff;
+        }
+
+        .option input {
+            width: 17px;
+            height: 17px;
+        }
+
+        .option-text {
+            color: #d7daea;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin: 35px 0 60px;
+        }
+
+        .submit-btn {
+            border: none;
+            padding: 14px 30px;
+            background: #626cff;
+            color: white;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .timer-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .timer-box strong {
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        CAREER<span>IQ</span>
+    </div>
+
+    <div class="nav-right">
+
+        <a href="/dashboard">Dashboard</a>
+
+        <a href="#">Assessments</a>
+
+        <a href="#">Careers</a>
+
+        <div class="profile">U</div>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+    <div class="timer-box">
+        <span>⏱ Time Remaining</span>
+        <strong id="timer">10:00</strong>
+    </div>
+
+    <div class="small-title">
+        TECHNICAL ASSESSMENT
+    </div>
+
+    <h1>
+        <span th:text="${skill}"></span>
+        Skill Assessment
+    </h1>
+
+    <p class="description">
+        Test your technical knowledge and understand your current skill level.
+    </p>
+
+
+    <div class="progress">
+
+        <div class="progress-bar"></div>
+
+    </div>
+
+
+    <form action="/assessment/submit" method="post">
+
+        <input type="hidden"
+               name="skill"
+               th:value="${skill}">
+
+        <div th:each="question, stat : ${questions}"
+             class="question-card">
+
+            <div class="question-number">
+
+                QUESTION
+                <span th:text="${stat.count}"></span>
+
+            </div>
+
+
+            <div class="question-text"
+                 th:text="${question.questionText}">
+            </div>
+
+
+            <label class="option">
+
+                <input type="radio"
+                       th:name="${'question_' + question.id}"
+                       value="A">
+
+                <span class="option-text"
+                      th:text="${question.optionA}">
+                </span>
+
+            </label>
+
+
+            <label class="option">
+
+                <input type="radio"
+                       th:name="${'question_' + question.id}"
+                       value="B">
+
+                <span class="option-text"
+                      th:text="${question.optionB}">
+                </span>
+
+            </label>
+
+
+            <label class="option">
+
+                <input type="radio"
+                       th:name="${'question_' + question.id}"
+                       value="C">
+
+                <span class="option-text"
+                      th:text="${question.optionC}">
+                </span>
+
+            </label>
+
+
+            <label class="option">
+
+                <input type="radio"
+                       th:name="${'question_' + question.id}"
+                       value="D">
+
+                <span class="option-text"
+                      th:text="${question.optionD}">
+                </span>
+
+            </label>
+
+        </div>
+
+
+        <div class="submit-section">
+
+            <button type="submit" class="submit-btn">
+                Submit Assessment →
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+<script>
+    let timeLeft = 10 * 60;
+    const timer = document.getElementById("timer");
+    const form = document.querySelector("form");
+
+    const countdown = setInterval(function () {
+
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+
+        timer.textContent =
+            String(minutes).padStart(2, "0") + ":" +
+            String(seconds).padStart(2, "0");
+
+        // Warning when 1 minute remains
+        if (timeLeft <= 60) {
+            timer.style.color = "#ff6b6b";
+        }
+
+        // Time finished
+        if (timeLeft <= 0) {
+
+            clearInterval(countdown);
+
+            timer.textContent = "00:00";
+
+            form.submit();
+
+            return;
+        }
+
+        timeLeft--;
+
+    }, 1000);
+
+    // Stop timer when student manually submits
+    form.addEventListener("submit", function () {
+        clearInterval(countdown);
+    });
+</script>
+</body>
+
+</html>

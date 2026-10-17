@@ -1,0 +1,2121 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CAREERIQ - Assessment</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+
+            background:
+                    radial-gradient(
+                            circle at top left,
+                            #1d2540,
+                            #090d18 45%,
+                            #05070d
+                    );
+
+            color: #ffffff;
+            min-height: 100vh;
+
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+
+            height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            border-bottom:
+                    1px solid rgba(255,255,255,0.08);
+
+            background:
+                    rgba(10,14,25,0.85);
+
+            backdrop-filter: blur(15px);
+        }
+
+
+        .logo {
+
+            font-size: 25px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            color: #ffffff;
+        }
+
+
+        .logo span {
+
+            color: #8b5cf6;
+        }
+
+
+        .nav-right {
+
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+        }
+
+
+        .skill-badge {
+
+            padding: 9px 16px;
+
+            border-radius: 20px;
+
+            background:
+                    rgba(139,92,246,0.15);
+
+            border:
+                    1px solid rgba(139,92,246,0.4);
+
+            color: #c4b5fd;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+
+            width: min(900px, 92%);
+
+            margin: 45px auto 70px;
+        }
+
+
+        /* =========================
+           TOP SECTION
+        ========================= */
+
+        .top-section {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .assessment-title h1 {
+
+            font-size: 30px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .assessment-title p {
+
+            color: #9ca3b5;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           TIMER
+        ========================= */
+
+        .timer-box {
+
+            min-width: 190px;
+
+            padding: 14px 18px;
+
+            border-radius: 14px;
+
+            background:
+                    rgba(255,255,255,0.05);
+
+            border:
+                    1px solid rgba(255,255,255,0.1);
+
+            text-align: center;
+        }
+
+
+        .timer-box span {
+
+            display: block;
+
+            color: #9ca3b5;
+
+            font-size: 12px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .timer-box strong {
+
+            display: block;
+
+            font-size: 25px;
+
+            letter-spacing: 2px;
+
+            color: #ffffff;
+        }
+
+
+        #violationDisplay {
+
+            display: block;
+
+            margin-top: 5px;
+
+            color: #fca5a5;
+
+            font-size: 11px;
+        }
+
+
+        .fullscreen-btn {
+
+            margin-top: 10px;
+
+            padding: 7px 12px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background:
+                    rgba(139,92,246,0.18);
+
+            color: #c4b5fd;
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 600;
+        }
+
+
+        .fullscreen-btn:hover {
+
+            background:
+                    rgba(139,92,246,0.3);
+        }
+
+
+        /* =========================
+           ADAPTIVE ASSESSMENT PANEL
+        ========================= */
+
+        .adaptive-panel {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 18px 22px;
+
+            margin-bottom: 25px;
+
+            border-radius: 16px;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            rgba(139,92,246,0.14),
+                            rgba(59,130,246,0.08)
+                    );
+
+            border:
+                    1px solid rgba(139,92,246,0.28);
+
+            box-shadow:
+                    0 10px 30px rgba(0,0,0,0.18);
+        }
+
+
+        .adaptive-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+        }
+
+
+        .adaptive-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                    rgba(139,92,246,0.18);
+
+            border:
+                    1px solid rgba(139,92,246,0.35);
+
+            font-size: 20px;
+        }
+
+
+        .adaptive-title {
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 4px;
+        }
+
+
+        .adaptive-description {
+
+            color: #9ca3b5;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           DIFFICULTY BADGE
+        ========================= */
+
+        .difficulty-badge {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 9px 15px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+
+        .difficulty-dot {
+
+            width: 8px;
+
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: currentColor;
+        }
+
+
+        /* EASY */
+
+        .difficulty-easy {
+
+            background:
+                    rgba(34,197,94,0.12);
+
+            border:
+                    1px solid rgba(34,197,94,0.3);
+
+            color: #86efac;
+        }
+
+
+        /* MEDIUM */
+
+        .difficulty-medium {
+
+            background:
+                    rgba(234,179,8,0.12);
+
+            border:
+                    1px solid rgba(234,179,8,0.3);
+
+            color: #fde047;
+        }
+
+
+        /* HARD */
+
+        .difficulty-hard {
+
+            background:
+                    rgba(239,68,68,0.12);
+
+            border:
+                    1px solid rgba(239,68,68,0.3);
+
+            color: #fca5a5;
+        }
+
+
+        /* =========================
+           PROGRESS
+        ========================= */
+
+        .progress-info {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 9px;
+
+            color: #9ca3b5;
+
+            font-size: 13px;
+        }
+
+
+        .progress-bar {
+
+            width: 100%;
+
+            height: 7px;
+
+            background:
+                    rgba(255,255,255,0.08);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            margin-bottom: 30px;
+        }
+
+
+        .progress-fill {
+
+            height: 100%;
+
+            background:
+                    linear-gradient(
+                            90deg,
+                            #8b5cf6,
+                            #a78bfa
+                    );
+
+            border-radius: 10px;
+
+            transition: width 0.3s ease;
+        }
+
+
+        /* =========================
+           QUESTION CARD
+        ========================= */
+
+        .question-card {
+
+            background:
+                    rgba(18,24,39,0.92);
+
+            border:
+                    1px solid rgba(255,255,255,0.09);
+
+            border-radius: 22px;
+
+            padding: 40px;
+
+            box-shadow:
+                    0 20px 60px rgba(0,0,0,0.35);
+
+            backdrop-filter: blur(15px);
+        }
+
+
+        .question-number {
+
+            display: inline-block;
+
+            padding: 7px 13px;
+
+            border-radius: 20px;
+
+            background:
+                    rgba(139,92,246,0.15);
+
+            color: #c4b5fd;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-bottom: 20px;
+        }
+
+
+        .question-text {
+
+            font-size: 23px;
+
+            line-height: 1.5;
+
+            margin-bottom: 30px;
+
+            color: #ffffff;
+        }
+
+
+        /* =========================
+           OPTIONS
+        ========================= */
+
+        .options {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 14px;
+        }
+
+
+        .option {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 17px 18px;
+
+            border:
+                    1px solid rgba(255,255,255,0.1);
+
+            border-radius: 13px;
+
+            background:
+                    rgba(255,255,255,0.025);
+
+            cursor: pointer;
+
+            transition:
+                    0.2s ease;
+        }
+
+
+        .option:hover {
+
+            border-color:
+                    rgba(139,92,246,0.5);
+
+            background:
+                    rgba(139,92,246,0.08);
+        }
+
+
+        .option input {
+
+            position: absolute;
+
+            opacity: 0;
+        }
+
+
+        .custom-radio {
+
+            width: 21px;
+
+            height: 21px;
+
+            min-width: 21px;
+
+            border-radius: 50%;
+
+            border:
+                    2px solid #697086;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .option input:checked + .custom-radio {
+
+            border-color: #8b5cf6;
+
+            background: #8b5cf6;
+        }
+
+
+        .option input:checked + .custom-radio::after {
+
+            content: "";
+
+            width: 7px;
+
+            height: 7px;
+
+            background: white;
+
+            border-radius: 50%;
+        }
+
+
+        .option:has(input:checked) {
+
+            border-color:
+                    rgba(139,92,246,0.7);
+
+            background:
+                    rgba(139,92,246,0.1);
+
+            box-shadow:
+                    0 0 0 1px rgba(139,92,246,0.2);
+        }
+
+
+        .option-letter {
+
+            width: 30px;
+
+            height: 30px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background:
+                    rgba(255,255,255,0.07);
+
+            color: #cbd5e1;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .option-text {
+
+            color: #e5e7eb;
+
+            font-size: 15px;
+
+            line-height: 1.4;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 35px;
+
+            gap: 15px;
+        }
+
+
+        .btn {
+
+            padding: 13px 25px;
+
+            border-radius: 10px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            border: none;
+
+            transition: 0.2s ease;
+        }
+
+
+        .btn-previous {
+
+            background:
+                    rgba(255,255,255,0.06);
+
+            color: #d1d5db;
+
+            border:
+                    1px solid rgba(255,255,255,0.1);
+        }
+
+
+        .btn-previous:hover {
+
+            background:
+                    rgba(255,255,255,0.1);
+        }
+
+
+        .btn-next {
+
+            background:
+                    #8b5cf6;
+
+            color: white;
+        }
+
+
+        .btn-next:hover {
+
+            background:
+                    #7c3aed;
+
+            transform: translateY(-1px);
+        }
+
+
+        .btn-submit {
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #8b5cf6,
+                            #6d28d9
+                    );
+
+            color: white;
+        }
+
+
+        .btn-submit:hover {
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                    0 8px 25px rgba(139,92,246,0.3);
+        }
+
+
+        /* =========================
+           WARNING OVERLAY
+        ========================= */
+
+        .warning-overlay {
+
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                    rgba(0,0,0,0.94);
+
+            z-index: 9999;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
+
+            padding: 20px;
+        }
+
+
+        .warning-box {
+
+            width: min(500px, 90%);
+
+            padding: 38px;
+
+            background:
+                    #121827;
+
+            border:
+                    1px solid rgba(255,255,255,0.15);
+
+            border-radius: 20px;
+
+            box-shadow:
+                    0 30px 80px rgba(0,0,0,0.5);
+        }
+
+
+        .warning-icon {
+
+            font-size: 48px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .warning-box h2 {
+
+            margin-bottom: 12px;
+
+            font-size: 25px;
+        }
+
+
+        .warning-box p {
+
+            color: #b7bfd3;
+
+            line-height: 1.6;
+
+            font-size: 14px;
+        }
+
+
+        .warning-btn {
+
+            margin-top: 22px;
+
+            padding: 13px 25px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #8b5cf6;
+
+            color: white;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .warning-btn:hover {
+
+            background: #7c3aed;
+        }
+
+
+        /* =========================
+           SMALL SCREEN
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+
+                padding: 0 4%;
+            }
+
+
+            .container {
+
+                margin-top: 30px;
+            }
+
+
+            .top-section {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 20px;
+            }
+
+
+            .timer-box {
+
+                width: 100%;
+            }
+
+
+            .adaptive-panel {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .difficulty-badge {
+
+                width: fit-content;
+            }
+
+
+            .question-card {
+
+                padding: 25px 20px;
+            }
+
+
+            .question-text {
+
+                font-size: 19px;
+            }
+
+
+            .navigation {
+
+                flex-direction: column;
+            }
+
+
+            .btn {
+
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        CAREER<span>IQ</span>
+
+    </div>
+
+
+    <div class="nav-right">
+
+        <div
+                class="skill-badge"
+                th:text="${skill}">
+
+            Java
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<div class="container">
+
+
+    <!-- =========================
+         TOP SECTION
+    ========================= -->
+
+    <div class="top-section">
+
+
+        <div class="assessment-title">
+
+            <h1>
+                Skill Assessment
+            </h1>
+
+            <p>
+                Test your knowledge and discover your current skill level.
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             TIMER
+        ========================= -->
+
+        <div class="timer-box">
+
+            <span>
+                ⏱ Time Remaining
+            </span>
+
+
+            <strong id="timer">
+
+                10:00
+
+            </strong>
+
+
+            <small id="violationDisplay">
+
+                Violations: 0
+
+            </small>
+
+
+            <button
+                    type="button"
+                    class="fullscreen-btn"
+                    onclick="enterFullscreen()">
+
+                ⛶ Enter Full Screen
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         ADAPTIVE ASSESSMENT
+    ========================= -->
+
+    <div class="adaptive-panel">
+
+
+        <div class="adaptive-left">
+
+
+            <div class="adaptive-icon">
+
+                🧠
+
+            </div>
+
+
+            <div>
+
+                <div class="adaptive-title">
+
+                    Adaptive Assessment
+
+                </div>
+
+
+                <div class="adaptive-description">
+
+                    CAREERIQ adjusts the difficulty of your next question
+                    based on your previous answer.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             DIFFICULTY
+        ========================= -->
+
+        <div
+                th:class="'difficulty-badge ' +
+                (${currentDifficulty.equalsIgnoreCase('Easy')}
+                    ? 'difficulty-easy'
+                    : (${currentDifficulty.equalsIgnoreCase('Medium')}
+                        ? 'difficulty-medium'
+                        : 'difficulty-hard'))">
+
+
+            <span class="difficulty-dot"></span>
+
+
+            <span>
+
+                Difficulty:
+
+                <span
+                        th:text="${currentDifficulty}">
+
+                    Easy
+
+                </span>
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         PROGRESS
+    ========================= -->
+
+    <div class="progress-info">
+
+
+        <span>
+
+            Question
+
+            <span th:text="${questionNumber}">
+
+                1
+
+            </span>
+
+            of
+
+            <span th:text="${totalQuestions}">
+
+                10
+
+            </span>
+
+        </span>
+
+
+        <span
+                th:text="${questionNumber + ' / ' + totalQuestions}">
+
+            1 / 10
+
+        </span>
+
+    </div>
+
+
+    <div class="progress-bar">
+
+
+        <div
+                class="progress-fill"
+                th:style="'width:' +
+                    (${questionNumber} * 100 / ${totalQuestions}) +
+                    '%'">
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         QUESTION FORM
+    ========================= -->
+
+    <form
+            th:action="@{/assessment/question}"
+            method="post">
+
+
+        <!-- =========================
+             QUESTION CARD
+        ========================= -->
+
+        <div class="question-card">
+
+
+            <!-- QUESTION NUMBER -->
+
+            <div class="question-number">
+
+                QUESTION
+
+                <span th:text="${questionNumber}">
+
+                    1
+
+                </span>
+
+            </div>
+
+
+            <!-- QUESTION -->
+
+            <h2
+                    class="question-text"
+                    th:text="${question.questionText}">
+
+                Question text
+
+            </h2>
+
+
+            <!-- =========================
+                 OPTIONS
+            ========================= -->
+
+            <div class="options">
+
+
+                <!-- OPTION A -->
+
+                <label class="option">
+
+
+                    <input
+                            type="radio"
+                            name="answer"
+                            value="A"
+                            th:checked="${selectedAnswer == 'A'}">
+
+
+                    <span class="custom-radio"></span>
+
+
+                    <span class="option-letter">
+
+                        A
+
+                    </span>
+
+
+                    <span
+                            class="option-text"
+                            th:text="${question.optionA}">
+
+                        Option A
+
+                    </span>
+
+                </label>
+
+
+                <!-- OPTION B -->
+
+                <label class="option">
+
+
+                    <input
+                            type="radio"
+                            name="answer"
+                            value="B"
+                            th:checked="${selectedAnswer == 'B'}">
+
+
+                    <span class="custom-radio"></span>
+
+
+                    <span class="option-letter">
+
+                        B
+
+                    </span>
+
+
+                    <span
+                            class="option-text"
+                            th:text="${question.optionB}">
+
+                        Option B
+
+                    </span>
+
+                </label>
+
+
+                <!-- OPTION C -->
+
+                <label class="option">
+
+
+                    <input
+                            type="radio"
+                            name="answer"
+                            value="C"
+                            th:checked="${selectedAnswer == 'C'}">
+
+
+                    <span class="custom-radio"></span>
+
+
+                    <span class="option-letter">
+
+                        C
+
+                    </span>
+
+
+                    <span
+                            class="option-text"
+                            th:text="${question.optionC}">
+
+                        Option C
+
+                    </span>
+
+                </label>
+
+
+                <!-- OPTION D -->
+
+                <label class="option">
+
+
+                    <input
+                            type="radio"
+                            name="answer"
+                            value="D"
+                            th:checked="${selectedAnswer == 'D'}">
+
+
+                    <span class="custom-radio"></span>
+
+
+                    <span class="option-letter">
+
+                        D
+
+                    </span>
+
+
+                    <span
+                            class="option-text"
+                            th:text="${question.optionD}">
+
+                        Option D
+
+                    </span>
+
+                </label>
+
+            </div>
+
+
+            <!-- =========================
+                 HIDDEN QUESTION ID
+            ========================= -->
+
+            <input
+                    type="hidden"
+                    name="questionId"
+                    th:value="${question.id}">
+
+
+            <!-- =========================
+                 NAVIGATION
+            ========================= -->
+
+            <div class="navigation">
+
+
+                <!-- PREVIOUS -->
+
+                <button
+                        type="submit"
+                        name="action"
+                        value="previous"
+                        class="btn btn-previous"
+                        th:disabled="${questionNumber == 1}">
+
+                    ← Previous
+
+                </button>
+
+
+                <!-- RIGHT BUTTON -->
+
+                <div>
+
+
+                    <!-- NEXT -->
+
+                    <button
+                            th:if="${questionNumber < totalQuestions}"
+                            type="submit"
+                            name="action"
+                            value="next"
+                            class="btn btn-next">
+
+                        Save & Next →
+
+                    </button>
+
+
+                    <!-- SUBMIT -->
+
+                    <button
+                            th:if="${questionNumber == totalQuestions}"
+                            type="submit"
+                            name="action"
+                            value="submit"
+                            class="btn btn-submit">
+
+                        Submit Assessment ✓
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- =========================
+     WARNING OVERLAY
+========================= -->
+
+<div
+        id="warningOverlay"
+        class="warning-overlay">
+
+
+    <div class="warning-box">
+
+
+        <div class="warning-icon">
+
+            ⚠️
+
+        </div>
+
+
+        <h2>
+
+            Assessment Warning
+
+        </h2>
+
+
+        <p id="warningMessage">
+
+            Leaving the assessment window is not allowed.
+
+        </p>
+
+
+        <button
+                type="button"
+                class="warning-btn"
+                onclick="closeWarning()">
+
+            Return to Assessment
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     TIMER + ANTI CHEATING
+========================= -->
+
+<script th:inline="javascript">
+
+
+    /* =========================================
+       SERVER BASED TIMER
+    ========================================= */
+
+    let remainingTime =
+        /*[[${remainingTime}]]*/ 600000;
+
+
+    const timer =
+        document.getElementById("timer");
+
+
+    const form =
+        document.querySelector("form");
+
+
+    function updateTimer() {
+
+
+        let totalSeconds =
+            Math.ceil(
+                remainingTime / 1000
+            );
+
+
+        let minutes =
+            Math.floor(
+                totalSeconds / 60
+            );
+
+
+        let seconds =
+            totalSeconds % 60;
+
+
+        timer.textContent =
+            String(minutes).padStart(2, "0")
+            + ":"
+            + String(seconds).padStart(2, "0");
+
+
+        /*
+         * Last 60 seconds
+         */
+
+        if (totalSeconds <= 60) {
+
+            timer.style.color =
+                "#ff6b6b";
+
+        }
+
+
+        /*
+         * Time finished
+         */
+
+        if (remainingTime <= 0) {
+
+
+            clearInterval(countdown);
+
+
+            timer.textContent =
+                "00:00";
+
+
+            /*
+             * Automatically submit
+             */
+
+            const submitButton =
+                document.createElement("input");
+
+
+            submitButton.type =
+                "hidden";
+
+
+            submitButton.name =
+                "action";
+
+
+            submitButton.value =
+                "submit";
+
+
+            form.appendChild(
+                submitButton
+            );
+
+
+            form.submit();
+
+
+            return;
+
+        }
+
+
+        remainingTime -= 1000;
+
+    }
+
+
+    updateTimer();
+
+
+    const countdown =
+        setInterval(
+            updateTimer,
+            1000
+        );
+
+
+    /* =========================================
+       WARNING SYSTEM
+    ========================================= */
+
+    const warningOverlay =
+        document.getElementById(
+            "warningOverlay"
+        );
+
+
+    const warningMessage =
+        document.getElementById(
+            "warningMessage"
+        );
+
+
+    const violationDisplay =
+        document.getElementById(
+            "violationDisplay"
+        );
+
+
+    /*
+     * Prevent duplicate violation
+     * when blur + visibilitychange
+     * happen together.
+     */
+
+    let lastViolationTime = 0;
+
+
+    const VIOLATION_COOLDOWN =
+        1500;
+
+
+    function registerViolation(message) {
+
+
+        const now =
+            Date.now();
+
+
+        /*
+         * Ignore duplicate events
+         * occurring almost together.
+         */
+
+        if (
+            now - lastViolationTime
+            < VIOLATION_COOLDOWN
+        ) {
+
+            return;
+
+        }
+
+
+        lastViolationTime =
+            now;
+
+
+        /*
+         * Send violation to server
+         */
+
+        fetch(
+            "/assessment/violation",
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/x-www-form-urlencoded"
+
+                },
+
+                body:
+                    "reason=" +
+                    encodeURIComponent(
+                        message
+                    )
+
+            }
+
+        )
+
+
+            .then(
+                response =>
+                    response.text()
+            )
+
+
+            .then(
+                result => {
+
+
+                    /*
+                     * Server says maximum
+                     * violations reached
+                     */
+
+                    if (
+                        result === "SUBMIT"
+                    ) {
+
+
+                        warningMessage.textContent =
+                            "Maximum violations reached. Your assessment will be submitted.";
+
+
+                        warningOverlay.style.display =
+                            "flex";
+
+
+                        setTimeout(
+                            function() {
+
+
+                                const submitButton =
+                                    document.createElement(
+                                        "input"
+                                    );
+
+
+                                submitButton.type =
+                                    "hidden";
+
+
+                                submitButton.name =
+                                    "action";
+
+
+                                submitButton.value =
+                                    "submit";
+
+
+                                form.appendChild(
+                                    submitButton
+                                );
+
+
+                                form.submit();
+
+                            },
+
+                            2000
+                        );
+
+
+                        return;
+
+                    }
+
+
+                    /*
+                     * Display server-side
+                     * violation count
+                     */
+
+                    violationDisplay.textContent =
+                        "Violations: "
+                        + result;
+
+
+                    warningMessage.textContent =
+                        message
+                        + " Violation "
+                        + result
+                        + " of 3.";
+
+
+                    warningOverlay.style.display =
+                        "flex";
+
+                }
+
+            )
+
+
+            .catch(
+                error => {
+
+
+                    console.error(
+                        "Unable to record violation:",
+                        error
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* =========================================
+       CLOSE WARNING
+    ========================================= */
+
+    function closeWarning() {
+
+
+        warningOverlay.style.display =
+            "none";
+
+    }
+
+
+    /* =========================================
+       DISABLE RIGHT CLICK
+    ========================================= */
+
+    document.addEventListener(
+        "contextmenu",
+        function(event) {
+
+
+            event.preventDefault();
+
+
+            registerViolation(
+                "Right-click is disabled during the assessment."
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       DISABLE COPY
+    ========================================= */
+
+    document.addEventListener(
+        "copy",
+        function(event) {
+
+
+            event.preventDefault();
+
+
+            registerViolation(
+                "Copying assessment content is not allowed."
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       DISABLE CUT
+    ========================================= */
+
+    document.addEventListener(
+        "cut",
+        function(event) {
+
+
+            event.preventDefault();
+
+
+            registerViolation(
+                "Cutting assessment content is not allowed."
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       DISABLE PASTE
+    ========================================= */
+
+    document.addEventListener(
+        "paste",
+        function(event) {
+
+
+            event.preventDefault();
+
+
+            registerViolation(
+                "Pasting content is not allowed during the assessment."
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       KEYBOARD SHORTCUT PROTECTION
+    ========================================= */
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+
+            /*
+             * CTRL / CMD shortcuts
+             */
+
+            if (
+                event.ctrlKey ||
+                event.metaKey
+            ) {
+
+
+                const key =
+                    event.key.toLowerCase();
+
+
+                /*
+                 * Copy
+                 * Cut
+                 * Paste
+                 * Print
+                 * Save
+                 * View Source
+                 */
+
+                if (
+
+                    key === "c" ||
+                    key === "x" ||
+                    key === "v" ||
+                    key === "p" ||
+                    key === "s" ||
+                    key === "u"
+
+                ) {
+
+
+                    event.preventDefault();
+
+
+                    registerViolation(
+                        "This keyboard shortcut is disabled during the assessment."
+                    );
+
+
+                    return;
+
+                }
+
+            }
+
+
+            /*
+             * F12
+             */
+
+            if (
+                event.key === "F12"
+            ) {
+
+
+                event.preventDefault();
+
+
+                registerViolation(
+                    "Developer tools are not allowed during the assessment."
+                );
+
+            }
+
+
+            /*
+             * Developer tools
+             * CTRL + SHIFT + I
+             */
+
+            if (
+
+                event.ctrlKey &&
+                event.shiftKey &&
+                event.key.toLowerCase() === "i"
+
+            ) {
+
+
+                event.preventDefault();
+
+
+                registerViolation(
+                    "Developer tools are not allowed during the assessment."
+                );
+
+            }
+
+
+            /*
+             * CTRL + SHIFT + J
+             */
+
+            if (
+
+                event.ctrlKey &&
+                event.shiftKey &&
+                event.key.toLowerCase() === "j"
+
+            ) {
+
+
+                event.preventDefault();
+
+
+                registerViolation(
+                    "Developer tools are not allowed during the assessment."
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       TAB / WINDOW SWITCH DETECTION
+    ========================================= */
+
+    document.addEventListener(
+        "visibilitychange",
+        function() {
+
+
+            if (
+                document.hidden
+            ) {
+
+
+                registerViolation(
+                    "You left the assessment window."
+                );
+
+            }
+
+        }
+    );
+
+
+    window.addEventListener(
+        "blur",
+        function() {
+
+
+            registerViolation(
+                "Assessment window lost focus."
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       FULL SCREEN
+    ========================================= */
+
+    function enterFullscreen() {
+
+
+        const element =
+            document.documentElement;
+
+
+        if (
+            element.requestFullscreen
+        ) {
+
+
+            element.requestFullscreen();
+
+        }
+
+    }
+
+
+    /* =========================================
+       FULL SCREEN EXIT DETECTION
+    ========================================= */
+
+    document.addEventListener(
+        "fullscreenchange",
+        function() {
+
+
+            /*
+             * Only register violation if
+             * fullscreen had actually been
+             * entered before.
+             */
+
+            if (
+                fullscreenStarted &&
+                !document.fullscreenElement
+            ) {
+
+
+                registerViolation(
+                    "Please remain in full-screen assessment mode."
+                );
+
+            }
+
+        }
+    );
+
+
+    let fullscreenStarted =
+        false;
+
+
+    document.addEventListener(
+        "fullscreenchange",
+        function() {
+
+
+            if (
+                document.fullscreenElement
+            ) {
+
+
+                fullscreenStarted =
+                    true;
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

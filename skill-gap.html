@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAREERIQ | Skill Gap Analysis</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #070a18;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 6%;
+      background: #080b19;
+      border-bottom: 1px solid #202640;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .logo span {
+      color: #6874ff;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 22px;
+    }
+
+    .nav-links a {
+      color: #aeb7d4;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: #ffffff;
+    }
+
+    .container {
+      width: 88%;
+      max-width: 1250px;
+      margin: auto;
+      padding: 50px 0 80px;
+    }
+
+    .eyebrow {
+      color: #818aff;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      margin-bottom: 14px;
+    }
+
+    .title {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      color: #9ba7c5;
+      font-size: 15px;
+      line-height: 1.8;
+      max-width: 800px;
+      margin-bottom: 30px;
+    }
+
+    .target-card {
+      padding: 27px;
+      background: linear-gradient(135deg, #151d3c, #0d1225);
+      border: 1px solid #303b68;
+      border-radius: 18px;
+      margin-bottom: 25px;
+    }
+
+    .target-label {
+      color: #9ba7c5;
+      font-size: 12px;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .target-career {
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .readiness-card {
+      padding: 28px;
+      background: #10152a;
+      border: 1px solid #252d49;
+      border-radius: 18px;
+      margin-bottom: 38px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .readiness-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .readiness-card h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .readiness-card p {
+      color: #9ba7c5;
+      line-height: 1.7;
+    }
+
+    .readiness-score {
+      font-size: 38px;
+      font-weight: 800;
+      color: #818aff;
+    }
+
+    .readiness-track {
+      width: 100%;
+      height: 10px;
+      background: #222940;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .readiness-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #5967ff, #20b8a6);
+      border-radius: 20px;
+    }
+
+    .section-title {
+      font-size: 25px;
+      margin-bottom: 12px;
+    }
+
+    .section-description {
+      color: #9ba7c5;
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #aeb7d4;
+      font-size: 12px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+
+    .current-dot {
+      background: #6874ff;
+    }
+
+    .target-dot {
+      background: #20b8a6;
+    }
+
+    .gap-dot {
+      background: #ff8e9c;
+    }
+
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      margin-bottom: 40px;
+    }
+
+    .skill-card {
+      background: linear-gradient(145deg, #11162a, #0c1020);
+      border: 1px solid #252d49;
+      border-radius: 18px;
+      padding: 25px;
+      transition: transform 0.25s, border-color 0.25s;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-3px);
+      border-color: #5967ff;
+    }
+
+    .skill-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    .skill-name {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .status {
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .status-strong {
+      color: #79e6b2;
+      background: #153329;
+    }
+
+    .status-improve {
+      color: #ffd27a;
+      background: #382d15;
+    }
+
+    .status-major {
+      color: #ff8e9c;
+      background: #3b1921;
+    }
+
+    .score-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 9px;
+      color: #aeb7d4;
+      font-size: 13px;
+    }
+
+    .score-label-row strong {
+      color: #ffffff;
+    }
+
+    .progress {
+      height: 9px;
+      width: 100%;
+      background: #222940;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .progress-current {
+      height: 100%;
+      background: linear-gradient(90deg, #5967ff, #8991ff);
+      border-radius: 20px;
+    }
+
+    .progress-target {
+      height: 100%;
+      background: linear-gradient(90deg, #168f83, #39d6b6);
+      border-radius: 20px;
+    }
+
+    .gap-summary {
+      padding: 15px;
+      background: #171d32;
+      border: 1px solid #293250;
+      border-radius: 12px;
+      margin-top: 2px;
+    }
+
+    .gap-summary-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 11px;
+    }
+
+    .gap-summary-label {
+      color: #aeb7d4;
+      font-size: 13px;
+    }
+
+    .gap-number {
+      color: #ff8e9c;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .gap-track {
+      height: 7px;
+      width: 100%;
+      background: #252d45;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .gap-fill {
+      height: 100%;
+      background: #ff8e9c;
+      border-radius: 20px;
+    }
+
+    .gap-fill-small {
+      background: #ffd27a;
+    }
+
+    .gap-fill-none {
+      background: #79e6b2;
+    }
+
+    .gap-caption {
+      color: #8793b3;
+      font-size: 11px;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin: 25px 0 40px;
+    }
+
+    .insight-card {
+      padding: 23px;
+      background: #11162a;
+      border: 1px solid #252d49;
+      border-radius: 18px;
+    }
+
+    .insight-card h3 {
+      font-size: 17px;
+      margin-bottom: 15px;
+    }
+
+    .insight-card ul {
+      list-style: none;
+    }
+
+    .insight-card li {
+      color: #aeb7d4;
+      padding: 8px 0;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .strong-icon {
+      color: #79e6b2;
+      margin-right: 7px;
+    }
+
+    .improve-icon {
+      color: #ffd27a;
+      margin-right: 7px;
+    }
+
+    .major-icon {
+      color: #ff8e9c;
+      margin-right: 7px;
+    }
+
+    .focus-card {
+      padding: 28px;
+      background: linear-gradient(135deg, #161d3b, #0f152c);
+      border: 1px solid #38457d;
+      border-radius: 18px;
+      margin-bottom: 35px;
+    }
+
+    .focus-card h2 {
+      font-size: 23px;
+      margin-bottom: 12px;
+    }
+
+    .focus-card > p {
+      color: #9ba7c5;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .focus-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .focus-item {
+      padding: 12px 16px;
+      background: #20294d;
+      border: 1px solid #3c4b84;
+      border-radius: 10px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .empty-message {
+      color: #79e6b2;
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .button {
+      display: inline-block;
+      text-decoration: none;
+      padding: 13px 25px;
+      border-radius: 11px;
+      font-weight: bold;
+      transition: 0.3s;
+      text-align: center;
+    }
+
+    .primary {
+      background: #5967ff;
+      color: #ffffff;
+    }
+
+    .primary:hover {
+      background: #7480ff;
+      transform: translateY(-2px);
+    }
+
+    .secondary {
+      color: #aeb7d4;
+      border: 1px solid #303952;
+    }
+
+    .secondary:hover {
+      color: #ffffff;
+      border-color: #6874ff;
+    }
+
+    @media (max-width: 950px) {
+      .container {
+        width: 90%;
+      }
+
+      .skill-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .insight-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .navbar {
+        flex-direction: column;
+        padding: 20px;
+      }
+
+      .nav-links {
+        justify-content: center;
+        gap: 14px;
+      }
+
+      .title {
+        font-size: 31px;
+      }
+
+      .target-career {
+        font-size: 22px;
+      }
+
+      .readiness-score {
+        font-size: 32px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="logo">CAREER<span>IQ</span></div>
+
+  <div class="nav-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/assessment/Java">Assessment</a>
+    <a href="/career-matches">Career Matches</a>
+    <a href="/skill-intelligence">Skill Intelligence</a>
+  </div>
+</nav>
+
+<main class="container">
+
+  <div class="eyebrow">SKILL GAP ANALYSIS</div>
+
+  <h1 class="title">What Are You Missing?</h1>
+
+  <p class="subtitle">
+    CAREERIQ compares your demonstrated skills against the
+    capabilities required for your target career and helps
+    you identify what to learn next.
+  </p>
+
+  <section class="target-card">
+    <div class="target-label">Target Career</div>
+
+    <div class="target-career"
+         th:text="${career}">
+      Java Full Stack Developer
+    </div>
+  </section>
+
+  <section class="readiness-card">
+    <div class="readiness-top">
+      <div>
+        <h2>Career Skill Readiness</h2>
+        <p>
+          See how closely your demonstrated skills match
+          the defined requirements for your target career.
+        </p>
+      </div>
+
+      <div class="readiness-score">
+        <span th:text="${readiness}">18</span>%
+      </div>
+    </div>
+
+    <div class="readiness-track">
+      <div class="readiness-fill"
+           th:style="'width:' + ${readiness} + '%;'">
+      </div>
+    </div>
+  </section>
+
+  <h2 class="section-title">Skill-by-Skill Analysis</h2>
+
+  <p class="section-description">
+    Compare your current score with the required target.
+    A smaller remaining gap means you are closer to the target.
+  </p>
+
+  <div class="legend">
+    <div class="legend-item">
+      <span class="legend-dot current-dot"></span>
+      Current score
+    </div>
+
+    <div class="legend-item">
+      <span class="legend-dot target-dot"></span>
+      Target score
+    </div>
+
+    <div class="legend-item">
+      <span class="legend-dot gap-dot"></span>
+      Remaining gap
+    </div>
+  </div>
+
+  <div class="skill-grid">
+
+    <div class="skill-card"
+         th:each="skill : ${skillGaps}">
+
+      <div class="skill-header">
+        <div class="skill-name"
+             th:text="${skill.skill}">
+          Java
+        </div>
+
+        <div class="status"
+             th:classappend="${skill.status == 'Strong' ? ' status-strong' :
+                                      skill.status == 'Improve' ? ' status-improve' :
+                                      ' status-major'}"
+             th:text="${skill.status}">
+          Improve
+        </div>
+      </div>
+
+      <div class="score-label-row">
+        <span>Your current score</span>
+        <strong>
+          <span th:text="${skill.currentScore}">63</span>%
+        </strong>
+      </div>
+
+      <div class="progress">
+        <div class="progress-current"
+             th:style="'width:' + ${skill.currentScore} + '%;'">
+        </div>
+      </div>
+
+      <div class="score-label-row">
+        <span>Required target score</span>
+        <strong>
+          <span th:text="${skill.requiredScore}">75</span>%
+        </strong>
+      </div>
+
+      <div class="progress">
+        <div class="progress-target"
+             th:style="'width:' + ${skill.requiredScore} + '%;'">
+        </div>
+      </div>
+
+      <div class="gap-summary">
+
+        <div class="gap-summary-top">
+                    <span class="gap-summary-label">
+                        Remaining skill gap
+                    </span>
+
+          <span class="gap-number"
+                th:style="${skill.gap == 0 ? 'color:#79e6b2;' :
+                                     skill.gap < 25 ? 'color:#ffd27a;' :
+                                     'color:#ff8e9c;'}">
+
+                        <span th:text="${skill.gap}">12</span> points
+                    </span>
+        </div>
+
+        <div class="gap-track">
+          <div class="gap-fill"
+               th:classappend="${skill.gap == 0 ? ' gap-fill-none' :
+                                          skill.gap < 25 ? ' gap-fill-small' : ''}"
+               th:style="'width:' + ${skill.gap} + '%;'">
+          </div>
+        </div>
+
+        <p class="gap-caption"
+           th:text="${skill.gap == 0
+                       ? 'You have reached the defined target for this skill.'
+                       : 'Continue learning and practicing to close this skill gap.'}">
+          Continue learning to close this skill gap.
+        </p>
+
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="section-title">CAREERIQ Insights</h2>
+
+  <div class="insight-grid">
+
+    <section class="insight-card">
+      <h3>Strong Skills</h3>
+
+      <ul>
+        <li th:each="item : ${strongSkills}">
+          <span class="strong-icon">✓</span>
+          <span th:text="${item}">Java</span>
+        </li>
+
+        <li th:if="${strongSkills.isEmpty()}">
+          No strong skills identified yet.
+        </li>
+      </ul>
+    </section>
+
+    <section class="insight-card">
+      <h3>Skills to Improve</h3>
+
+      <ul>
+        <li th:each="item : ${improvementSkills}">
+          <span class="improve-icon">⚠</span>
+          <span th:text="${item}">JavaScript</span>
+        </li>
+
+        <li th:if="${improvementSkills.isEmpty()}">
+          No immediate improvement areas.
+        </li>
+      </ul>
+    </section>
+
+    <section class="insight-card">
+      <h3>Major Gaps</h3>
+
+      <ul>
+        <li th:each="item : ${majorGaps}">
+          <span class="major-icon">●</span>
+          <span th:text="${item}">Spring Boot</span>
+        </li>
+
+        <li th:if="${majorGaps.isEmpty()}">
+          No major skill gaps identified.
+        </li>
+      </ul>
+    </section>
+
+  </div>
+
+  <section class="focus-card">
+    <h2>Your Next Focus</h2>
+
+    <p>
+      Prioritize these skills to improve your readiness
+      for your selected career.
+    </p>
+
+    <div class="focus-list">
+
+      <div class="focus-item"
+           th:each="item : ${nextFocus}">
+        → <span th:text="${item}">Spring Boot</span>
+      </div>
+
+      <div class="empty-message"
+           th:if="${nextFocus.isEmpty()}">
+        Your current skills meet the defined requirements
+        for this career path.
+      </div>
+
+    </div>
+  </section>
+
+  <div class="actions">
+    <a href="/career-matches" class="button secondary">
+      ← Career Matches
+    </a>
+
+    <a href="/assessment/Java" class="button primary">
+      Take Assessment →
+    </a>
+  </div>
+
+</main>
+
+</body>
+</html>

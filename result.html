@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>CAREERIQ | Assessment Result</title>
+
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+
+    body {
+
+      background:
+              radial-gradient(
+                      circle at top right,
+                      #151b3b 0%,
+                      #080b18 42%
+              );
+
+      color: white;
+
+      min-height: 100vh;
+    }
+
+
+    /* ================================
+       NAVBAR
+       ================================ */
+
+    .navbar {
+
+      height: 72px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      padding: 0 7%;
+
+      border-bottom:
+              1px solid #22283d;
+    }
+
+
+    .logo {
+
+      font-size: 25px;
+
+      font-weight: bold;
+
+      letter-spacing: 2px;
+    }
+
+
+    .logo span {
+
+      color: #6872ff;
+    }
+
+
+    /* ================================
+       MAIN CONTAINER
+       ================================ */
+
+    .container {
+
+      width: 90%;
+
+      max-width: 1050px;
+
+      margin: 55px auto 80px;
+
+      text-align: center;
+    }
+
+
+    .small-title {
+
+      color: #6872ff;
+
+      font-size: 13px;
+
+      font-weight: bold;
+
+      letter-spacing: 2px;
+
+      margin-bottom: 15px;
+    }
+
+
+    h1 {
+
+      font-size: 40px;
+
+      margin-bottom: 12px;
+    }
+
+
+    .subtitle {
+
+      color: #9da4bd;
+
+      margin-bottom: 35px;
+
+      font-size: 15px;
+    }
+
+
+    /* ================================
+       MAIN RESULT CARD
+       ================================ */
+
+    .result-card {
+
+      background:
+              linear-gradient(
+                      145deg,
+                      #111629,
+                      #0c1020
+              );
+
+      border:
+              1px solid #272d45;
+
+      border-radius: 22px;
+
+      padding: 40px;
+
+      box-shadow:
+              0 20px 60px
+              rgba(0, 0, 0, 0.35);
+    }
+
+
+    /* ================================
+       SCORE
+       ================================ */
+
+    .score-circle {
+
+      width: 180px;
+
+      height: 180px;
+
+      margin: 0 auto 20px;
+
+      border-radius: 50%;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background:
+              radial-gradient(
+                      circle,
+                      #151a35 55%,
+                      #0d1122 56%
+              );
+
+      border:
+              8px solid #626cff;
+
+      box-shadow:
+              0 0 35px
+              rgba(98, 108, 255, 0.25);
+    }
+
+
+    .score {
+
+      font-size: 55px;
+
+      font-weight: bold;
+
+      color: #6872ff;
+    }
+
+
+    .score-label {
+
+      color: #9da4bd;
+
+      font-size: 12px;
+
+      letter-spacing: 1px;
+
+      margin-top: 4px;
+    }
+
+
+    .level {
+
+      font-size: 24px;
+
+      font-weight: bold;
+
+      margin-bottom: 30px;
+    }
+
+
+    .level span {
+
+      color: #6872ff;
+    }
+
+
+    /* ================================
+       BASIC STATS
+       ================================ */
+
+    .stats {
+
+      display: grid;
+
+      grid-template-columns:
+                repeat(3, 1fr);
+
+      gap: 18px;
+
+      margin-bottom: 40px;
+    }
+
+
+    .stat-box {
+
+      background: #171c30;
+
+      border:
+              1px solid #292f46;
+
+      border-radius: 14px;
+
+      padding: 22px;
+
+      transition: 0.25s;
+    }
+
+
+    .stat-box:hover {
+
+      transform: translateY(-3px);
+
+      border-color: #4d57d8;
+    }
+
+
+    .stat-number {
+
+      font-size: 27px;
+
+      font-weight: bold;
+
+      margin-bottom: 7px;
+    }
+
+
+    .stat-label {
+
+      color: #9da4bd;
+
+      font-size: 13px;
+    }
+
+
+    /* ================================
+       INTELLIGENCE SECTION
+       ================================ */
+
+    .section-title {
+
+      text-align: left;
+
+      font-size: 21px;
+
+      margin-bottom: 7px;
+    }
+
+
+    .section-subtitle {
+
+      text-align: left;
+
+      color: #8e96b0;
+
+      font-size: 13px;
+
+      margin-bottom: 25px;
+    }
+
+
+    .analytics-grid {
+
+      display: grid;
+
+      grid-template-columns:
+                repeat(2, 1fr);
+
+      gap: 18px;
+
+      margin-bottom: 35px;
+    }
+
+
+    .analytics-card {
+
+      background: #12172a;
+
+      border:
+              1px solid #292f46;
+
+      border-radius: 15px;
+
+      padding: 22px;
+
+      text-align: left;
+
+      transition: 0.25s;
+    }
+
+
+    .analytics-card:hover {
+
+      border-color: #4c56d8;
+
+      transform: translateY(-3px);
+    }
+
+
+    .analytics-header {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      margin-bottom: 14px;
+    }
+
+
+    .analytics-name {
+
+      font-size: 15px;
+
+      font-weight: bold;
+    }
+
+
+    .analytics-score {
+
+      color: #6872ff;
+
+      font-weight: bold;
+
+      font-size: 17px;
+    }
+
+
+    .progress-bg {
+
+      height: 9px;
+
+      background: #252b42;
+
+      border-radius: 20px;
+
+      overflow: hidden;
+    }
+
+
+    .progress-bar {
+
+      height: 100%;
+
+      width: 0%;
+
+      background:
+              linear-gradient(
+                      90deg,
+                      #4f58e8,
+                      #7b83ff
+              );
+
+      border-radius: 20px;
+
+      transition:
+              width 1s ease;
+    }
+
+
+    /* ================================
+       INSIGHT BOX
+       ================================ */
+
+    .insight-box {
+
+      background:
+              linear-gradient(
+                      135deg,
+                      #171c38,
+                      #11162b
+              );
+
+      border:
+              1px solid #30385a;
+
+      border-radius: 16px;
+
+      padding: 25px;
+
+      text-align: left;
+
+      margin-bottom: 35px;
+    }
+
+
+    .insight-title {
+
+      color: #6872ff;
+
+      font-size: 13px;
+
+      font-weight: bold;
+
+      letter-spacing: 1px;
+
+      margin-bottom: 12px;
+    }
+
+
+    .insight-text {
+
+      color: #d6daeb;
+
+      line-height: 1.6;
+
+      font-size: 14px;
+    }
+
+
+    /* ================================
+       BUTTONS
+       ================================ */
+
+    .actions {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 14px;
+
+      flex-wrap: wrap;
+    }
+
+
+    .dashboard-btn {
+
+      display: inline-block;
+
+      padding: 14px 25px;
+
+      background: #626cff;
+
+      color: white;
+
+      text-decoration: none;
+
+      border-radius: 9px;
+
+      font-weight: bold;
+
+      transition: 0.25s;
+    }
+
+
+    .dashboard-btn:hover {
+
+      background: #747cff;
+
+      transform:
+              translateY(-2px);
+    }
+
+
+    .secondary-btn {
+
+      background: #171c30;
+
+      border:
+              1px solid #343b5a;
+    }
+
+
+    .secondary-btn:hover {
+
+      background: #202640;
+    }
+
+
+    /* ================================
+       FOOTER NOTE
+       ================================ */
+
+    .footer-note {
+
+      margin-top: 28px;
+
+      color: #707891;
+
+      font-size: 12px;
+    }
+
+
+    /* ================================
+       RESPONSIVE
+       ================================ */
+
+    @media(max-width: 700px) {
+
+      .container {
+
+        width: 94%;
+
+        margin-top: 35px;
+      }
+
+
+      .result-card {
+
+        padding: 25px 18px;
+      }
+
+
+      h1 {
+
+        font-size: 30px;
+      }
+
+
+      .score-circle {
+
+        width: 150px;
+
+        height: 150px;
+      }
+
+
+      .score {
+
+        font-size: 45px;
+      }
+
+
+      .stats {
+
+        grid-template-columns:
+                    1fr;
+      }
+
+
+      .analytics-grid {
+
+        grid-template-columns:
+                    1fr;
+      }
+
+
+      .dashboard-btn {
+
+        width: 100%;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     NAVBAR
+     ===================================== -->
+
+<nav class="navbar">
+
+  <div class="logo">
+
+    CAREER<span>IQ</span>
+
+  </div>
+
+</nav>
+
+
+
+<!-- =====================================
+     MAIN
+     ===================================== -->
+
+<div class="container">
+
+
+  <div class="small-title">
+
+    ASSESSMENT COMPLETE
+
+  </div>
+
+
+  <h1>
+
+    <span th:text="${skill}"></span>
+    Assessment Result
+
+  </h1>
+
+
+  <p class="subtitle">
+
+    CAREERIQ has analyzed your technical
+    performance across multiple dimensions.
+
+  </p>
+
+
+
+  <!-- =================================
+       RESULT CARD
+       ================================= -->
+
+  <div class="result-card">
+
+
+    <!-- OVERALL SCORE -->
+
+    <div class="score-circle">
+
+      <div class="score">
+
+                <span th:text="${score}">
+                    0
+                </span>%
+
+      </div>
+
+      <div class="score-label">
+
+        OVERALL SCORE
+
+      </div>
+
+    </div>
+
+
+
+    <!-- SKILL LEVEL -->
+
+    <div class="level">
+
+      Skill Level:
+
+      <span th:text="${skillLevel}">
+                Beginner
+            </span>
+
+    </div>
+
+
+
+    <!-- =================================
+         BASIC STATISTICS
+         ================================= -->
+
+    <div class="stats">
+
+
+      <div class="stat-box">
+
+        <div class="stat-number">
+
+                    <span th:text="${correctAnswers}">
+                        0
+                    </span>
+
+        </div>
+
+        <div class="stat-label">
+
+          Correct Answers
+
+        </div>
+
+      </div>
+
+
+
+      <div class="stat-box">
+
+        <div class="stat-number">
+
+                    <span th:text="${totalQuestions}">
+                        0
+                    </span>
+
+        </div>
+
+        <div class="stat-label">
+
+          Total Questions
+
+        </div>
+
+      </div>
+
+
+
+      <div class="stat-box">
+
+        <div class="stat-number">
+
+                    <span th:text="${overallAnalyticsScore}">
+                        0
+                    </span>%
+
+        </div>
+
+        <div class="stat-label">
+
+          Intelligence Score
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- =================================
+         INTELLIGENCE BREAKDOWN
+         ================================= -->
+
+    <div class="section-title">
+
+      Skill Intelligence Breakdown
+
+    </div>
+
+
+    <div class="section-subtitle">
+
+      CAREERIQ evaluates more than
+      memorization. Your performance is
+      analyzed across different abilities.
+
+    </div>
+
+
+
+    <div class="analytics-grid">
+
+
+      <!-- KNOWLEDGE -->
+
+      <div class="analytics-card">
+
+        <div class="analytics-header">
+
+          <div class="analytics-name">
+
+            🧠 Knowledge
+
+          </div>
+
+          <div class="analytics-score">
+
+                        <span th:text="${knowledgeScore}">
+                            0
+                        </span>%
+
+          </div>
+
+        </div>
+
+
+        <div class="progress-bg">
+
+          <div class="progress-bar"
+               th:style="'width:' + ${knowledgeScore} + '%'">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- APPLICATION -->
+
+      <div class="analytics-card">
+
+        <div class="analytics-header">
+
+          <div class="analytics-name">
+
+            ⚙️ Application
+
+          </div>
+
+          <div class="analytics-score">
+
+                        <span th:text="${applicationScore}">
+                            0
+                        </span>%
+
+          </div>
+
+        </div>
+
+
+        <div class="progress-bg">
+
+          <div class="progress-bar"
+               th:style="'width:' + ${applicationScore} + '%'">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- DEBUGGING -->
+
+      <div class="analytics-card">
+
+        <div class="analytics-header">
+
+          <div class="analytics-name">
+
+            🐞 Debugging
+
+          </div>
+
+          <div class="analytics-score">
+
+                        <span th:text="${debuggingScore}">
+                            0
+                        </span>%
+
+          </div>
+
+        </div>
+
+
+        <div class="progress-bg">
+
+          <div class="progress-bar"
+               th:style="'width:' + ${debuggingScore} + '%'">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- PROBLEM SOLVING -->
+
+      <div class="analytics-card">
+
+        <div class="analytics-header">
+
+          <div class="analytics-name">
+
+            🧩 Problem Solving
+
+          </div>
+
+          <div class="analytics-score">
+
+                        <span th:text="${problemSolvingScore}">
+                            0
+                        </span>%
+
+          </div>
+
+        </div>
+
+
+        <div class="progress-bg">
+
+          <div class="progress-bar"
+               th:style="'width:' + ${problemSolvingScore} + '%'">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- =================================
+         CAREERIQ INSIGHT
+         ================================= -->
+
+    <div class="insight-box">
+
+
+      <div class="insight-title">
+
+        CAREERIQ INSIGHT
+
+      </div>
+
+
+      <div class="insight-text"
+           id="insightText">
+
+        Analyzing your assessment
+        performance...
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- =================================
+         ACTION BUTTONS
+         ================================= -->
+
+    <div class="actions">
+
+
+      <a th:href="@{/skill-intelligence(score=${score}, skill=${skill})}"
+         class="dashboard-btn">
+
+        View Skill Intelligence →
+
+      </a>
+
+
+      <a th:href="@{/career-matches(score=${score})}"
+         class="dashboard-btn secondary-btn">
+
+        Explore Career Matches →
+
+      </a>
+
+
+    </div>
+
+
+
+    <div class="footer-note">
+
+      Your assessment results have been
+      saved to your CAREERIQ profile.
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================
+     INSIGHT JAVASCRIPT
+     ===================================== -->
+
+<script th:inline="javascript">
+
+  const knowledge =
+          /*[[${knowledgeScore}]]*/ 0;
+
+  const application =
+          /*[[${applicationScore}]]*/ 0;
+
+  const debugging =
+          /*[[${debuggingScore}]]*/ 0;
+
+  const problemSolving =
+          /*[[${problemSolvingScore}]]*/ 0;
+
+
+  const scores = [
+
+    {
+      name: "Knowledge",
+      score: knowledge
+    },
+
+    {
+      name: "Application",
+      score: application
+    },
+
+    {
+      name: "Debugging",
+      score: debugging
+    },
+
+    {
+      name: "Problem Solving",
+      score: problemSolving
+    }
+
+  ];
+
+
+  let strongest =
+          scores[0];
+
+  let weakest =
+          scores[0];
+
+
+  for (
+          let i = 1;
+          i < scores.length;
+          i++
+  ) {
+
+    if (
+            scores[i].score >
+            strongest.score
+    ) {
+
+      strongest =
+              scores[i];
+    }
+
+
+    if (
+            scores[i].score <
+            weakest.score
+    ) {
+
+      weakest =
+              scores[i];
+    }
+
+  }
+
+
+  let insight = "";
+
+
+  if (
+          strongest.score ===
+          weakest.score
+  ) {
+
+    insight =
+            "Your performance is currently balanced across the assessed dimensions. Continue practicing practical questions and real-world problem solving to build stronger evidence of your technical ability.";
+
+  }
+
+  else {
+
+    insight =
+            "Your strongest area is <strong>"
+            + strongest.name
+            + "</strong> with a score of <strong>"
+            + strongest.score
+            + "%</strong>. Your main improvement area is <strong>"
+            + weakest.name
+            + "</strong> at <strong>"
+            + weakest.score
+            + "%</strong>. Focus your next learning activities on this weaker area while continuing to maintain your strongest skill.";
+
+  }
+
+
+  document.getElementById(
+          "insightText"
+  ).innerHTML = insight;
+
+</script>
+
+
+</body>
+
+</html>

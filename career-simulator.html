@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CAREERIQ - Career Simulator</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background:
+                    radial-gradient(circle at top left, #18264d, transparent 35%),
+                    radial-gradient(circle at bottom right, #32184d, transparent 35%),
+                    #080b16;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: rgba(8,11,22,0.85);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: #8b7cff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #b8bfd5;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 86%;
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 45px 0 70px;
+        }
+
+        .hero {
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 span {
+            color: #8b7cff;
+        }
+
+        .hero p {
+            color: #9da5bd;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .career-badge {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 9px 16px;
+            border-radius: 30px;
+            background: rgba(139,124,255,0.15);
+            border: 1px solid rgba(139,124,255,0.35);
+            color: #c7c0ff;
+            font-size: 14px;
+        }
+
+        /* ================= READINESS ================= */
+
+        .readiness-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            margin: 30px 0;
+        }
+
+        .readiness-card {
+            padding: 28px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.09);
+            backdrop-filter: blur(15px);
+        }
+
+        .card-label {
+            color: #9da5bd;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .readiness-number {
+            font-size: 46px;
+            font-weight: bold;
+        }
+
+        .current {
+            color: #7fd8ff;
+        }
+
+        .simulated {
+            color: #9dffb0;
+        }
+
+        .readiness-subtitle {
+            color: #9299ae;
+            margin-top: 8px;
+        }
+
+        /* ================= SIMULATOR ================= */
+
+        .simulator-card {
+            padding: 30px;
+            border-radius: 22px;
+            background: rgba(255,255,255,0.045);
+            border: 1px solid rgba(255,255,255,0.09);
+            margin-top: 25px;
+        }
+
+        .simulator-card h2 {
+            margin-bottom: 8px;
+        }
+
+        .simulator-card > p {
+            color: #9299ae;
+            margin-bottom: 28px;
+        }
+
+        .skill-row {
+            display: grid;
+            grid-template-columns: 170px 1fr 120px;
+            align-items: center;
+            gap: 20px;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .skill-name {
+            font-weight: bold;
+        }
+
+        .skill-info {
+            color: #8f97ad;
+            font-size: 13px;
+        }
+
+        .range-container {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: #8b7cff;
+            cursor: pointer;
+        }
+
+        .range-value {
+            color: #c7c0ff;
+            font-size: 13px;
+        }
+
+        .simulate-btn {
+            margin-top: 30px;
+            width: 100%;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #7666ff, #9c65ff);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .simulate-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.92;
+        }
+
+        /* ================= RESULT ================= */
+
+        .result-card {
+            margin-top: 25px;
+            padding: 30px;
+            border-radius: 22px;
+            background: rgba(139,124,255,0.08);
+            border: 1px solid rgba(139,124,255,0.22);
+        }
+
+        .result-card h2 {
+            margin-bottom: 20px;
+        }
+
+        .result-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-number {
+            font-size: 42px;
+            font-weight: bold;
+            color: #9dffb0;
+        }
+
+        .improvement {
+            color: #9dffb0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+            margin-top: 40px;
+            color: #737b91;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 800px) {
+
+            .readiness-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skill-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .result-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav>
+
+    <div class="logo">
+        CAREER<span>IQ</span>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/skill-gap">
+            Skill Gap
+        </a>
+
+        <a href="/roadmap">
+            Roadmap
+        </a>
+
+        <a href="/career-matches">
+            Careers
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="container">
+
+
+    <div class="hero">
+
+        <h1>
+            Career <span>Simulator</span>
+        </h1>
+
+        <p>
+            Explore how improving your skills could change
+            your readiness for your target career.
+        </p>
+
+        <div class="career-badge">
+
+            Target Career:
+            <strong th:text="${career}">
+                Java Full Stack Developer
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= READINESS ================= -->
+
+    <div class="readiness-grid">
+
+
+        <div class="readiness-card">
+
+            <div class="card-label">
+                CURRENT READINESS
+            </div>
+
+            <div class="readiness-number current"
+                 th:text="${currentReadiness + '%'}">
+                0%
+            </div>
+
+            <div class="readiness-subtitle">
+                Based on your current assessment results
+            </div>
+
+        </div>
+
+
+        <div class="readiness-card">
+
+            <div class="card-label">
+                SIMULATED READINESS
+            </div>
+
+            <div class="readiness-number simulated"
+                 id="simulatedReadiness">
+
+                0%
+
+            </div>
+
+            <div class="readiness-subtitle">
+                After simulated skill improvement
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ================= SIMULATOR ================= -->
+
+    <div class="simulator-card">
+
+        <h2>
+            Improve Your Skills
+        </h2>
+
+        <p>
+            Move the sliders to simulate how learning
+            and practice could improve your career readiness.
+        </p>
+
+
+        <form
+                id="simulatorForm"
+                method="get"
+                action="/career-simulator/simulate">
+
+
+            <input
+                    type="hidden"
+                    name="career"
+                    th:value="${career}">
+
+
+            <!-- JAVA -->
+
+            <div class="skill-row"
+                 th:if="${requiredSkills.containsKey('Java')}">
+
+                <div>
+
+                    <div class="skill-name">
+                        Java
+                    </div>
+
+                    <div class="skill-info">
+                        Current:
+                        <span th:text="${currentScores.get('Java')}">
+                            0
+                        </span>
+                        / 100
+                    </div>
+
+                </div>
+
+                <div class="range-container">
+
+                    <input
+                            type="range"
+                            name="javaImprovement"
+                            min="0"
+                            max="30"
+                            value="0"
+                            oninput="updateValue(this, 'javaValue')">
+
+                    <div class="range-value"
+                         id="javaValue">
+                        +0 points
+                    </div>
+
+                </div>
+
+                <div>
+                    Required:
+                    <strong
+                            th:text="${requiredSkills.get('Java')}">
+                        75
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <!-- SPRING BOOT -->
+
+            <div class="skill-row"
+                 th:if="${requiredSkills.containsKey('Spring Boot')}">
+
+                <div>
+
+                    <div class="skill-name">
+                        Spring Boot
+                    </div>
+
+                    <div class="skill-info">
+                        Current:
+                        <span th:text="${currentScores.get('Spring Boot')}">
+                            0
+                        </span>
+                        / 100
+                    </div>
+
+                </div>
+
+                <div class="range-container">
+
+                    <input
+                            type="range"
+                            name="springImprovement"
+                            min="0"
+                            max="30"
+                            value="0"
+                            oninput="updateValue(this, 'springValue')">
+
+                    <div class="range-value"
+                         id="springValue">
+                        +0 points
+                    </div>
+
+                </div>
+
+                <div>
+                    Required:
+                    <strong
+                            th:text="${requiredSkills.get('Spring Boot')}">
+                        70
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <!-- SQL -->
+
+            <div class="skill-row"
+                 th:if="${requiredSkills.containsKey('SQL')}">
+
+                <div>
+
+                    <div class="skill-name">
+                        SQL
+                    </div>
+
+                    <div class="skill-info">
+                        Current:
+                        <span th:text="${currentScores.get('SQL')}">
+                            0
+                        </span>
+                        / 100
+                    </div>
+
+                </div>
+
+                <div class="range-container">
+
+                    <input
+                            type="range"
+                            name="sqlImprovement"
+                            min="0"
+                            max="30"
+                            value="0"
+                            oninput="updateValue(this, 'sqlValue')">
+
+                    <div class="range-value"
+                         id="sqlValue">
+                        +0 points
+                    </div>
+
+                </div>
+
+                <div>
+                    Required:
+                    <strong
+                            th:text="${requiredSkills.get('SQL')}">
+                        65
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <!-- JAVASCRIPT -->
+
+            <div class="skill-row"
+                 th:if="${requiredSkills.containsKey('JavaScript')}">
+
+                <div>
+
+                    <div class="skill-name">
+                        JavaScript
+                    </div>
+
+                    <div class="skill-info">
+                        Current:
+                        <span th:text="${currentScores.get('JavaScript')}">
+                            0
+                        </span>
+                        / 100
+                    </div>
+
+                </div>
+
+                <div class="range-container">
+
+                    <input
+                            type="range"
+                            name="javascriptImprovement"
+                            min="0"
+                            max="30"
+                            value="0"
+                            oninput="updateValue(this, 'javascriptValue')">
+
+                    <div class="range-value"
+                         id="javascriptValue">
+                        +0 points
+                    </div>
+
+                </div>
+
+                <div>
+                    Required:
+                    <strong
+                            th:text="${requiredSkills.get('JavaScript')}">
+                        65
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <!-- HTML/CSS -->
+
+            <div class="skill-row"
+                 th:if="${requiredSkills.containsKey('HTML/CSS')}">
+
+                <div>
+
+                    <div class="skill-name">
+                        HTML/CSS
+                    </div>
+
+                    <div class="skill-info">
+                        Current:
+                        <span th:text="${currentScores.get('HTML/CSS')}">
+                            0
+                        </span>
+                        / 100
+                    </div>
+
+                </div>
+
+                <div class="range-container">
+
+                    <input
+                            type="range"
+                            name="htmlImprovement"
+                            min="0"
+                            max="30"
+                            value="0"
+                            oninput="updateValue(this, 'htmlValue')">
+
+                    <div class="range-value"
+                         id="htmlValue">
+                        +0 points
+                    </div>
+
+                </div>
+
+                <div>
+                    Required:
+                    <strong
+                            th:text="${requiredSkills.get('HTML/CSS')}">
+                        60
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <button
+                    type="submit"
+                    class="simulate-btn">
+
+                🔮 Simulate Career Improvement
+
+            </button>
+
+
+        </form>
+
+    </div>
+
+
+    <!-- ================= RESULT ================= -->
+
+    <div class="result-card">
+
+        <h2>
+            Simulation Result
+        </h2>
+
+        <div class="result-flex">
+
+            <div>
+
+                <div class="card-label">
+                    PROJECTED READINESS
+                </div>
+
+                <div class="result-number"
+                     th:text="${simulatedReadiness + '%'}">
+
+                    0%
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div class="card-label">
+                    POTENTIAL IMPROVEMENT
+                </div>
+
+                <div class="improvement"
+                     th:text="${'+' + improvement + '%'}">
+
+                    +0%
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+
+        CAREERIQ • Career Intelligence Platform
+
+    </div>
+
+
+</div>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+    function updateValue(
+        slider,
+        elementId
+    ) {
+
+        document.getElementById(
+            elementId
+        ).innerText =
+            "+" + slider.value + " points";
+    }
+
+
+</script>
+
+
+</body>
+
+</html>
